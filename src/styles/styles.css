@@ -1,0 +1,10 @@
+.rating-panel {
+    display: inline-block;
+    float: right;
+}
+
+.rating-star {
+    display: inline;
+    float: left;
+    margin-left: 3px;
+}
