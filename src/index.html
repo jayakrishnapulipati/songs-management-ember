@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Songs-Management</title>
+    <link rel="stylesheet" href="lib.min.css" />
+    <link rel="stylesheet" href="all.min.css" />
+</head>
+<body>
+    <script type="text/x-handlebars">
+        <div class="container">
+            <div class="page-header">
+                {{#link-to 'index'}}<h2>Ember Application</h2>{{/link-to}}
+            </div>
+            <div class="row">
+                {{outlet}}
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="index">
+
+    </script>
+
+    <script type="text/x-handlebars" id="artists">
+        <div class="col-md-4">
+            <div class="list-group">
+                <div class="list-group-item">
+                    {{input type="text" class="new-artist" placeholder="newArtist" value=newArtist insert-newline="createArtist"}}
+                    <button class="btn btn-primary btn-sm" {{action "createArtist"}}
+                      {{bind-attr disabled=disabled}}>Add</button>
+                </div>
+                {{#each}}
+                    {{#link-to 'artists.songs' this class="list-group-item"}}
+                        {{name}}
+                    {{/link-to}}
+                {{/each}}
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="list-group">
+                {{outlet}}
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="artists/index">
+        <div class="list-group-item">
+            <div>
+                Select an artist
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="artists/songs">
+        {{#if canCreateSong}}
+            <div class="list-group-item">
+                {{input type="text" class="new-song" placeholder="newSong" value=newSong insert-newline="createSong"}}
+                <button class="btn btn-primary btn-sm" {{action "createSong"}}
+                   {{bind-attr disabled=disabled}}>Add</button>
+                {{view Ember.Select
+                    content=sortOptions
+                    value=selectedSort
+                    optionValuePath="content.id"
+                    optionLabelPath="content.name"
+                    classNames="pull-right"
+                }}
+            </div>
+        {{/if}}
+        {{#each sortedSongs}}
+            <div class="list-group-item">
+                {{title}}
+                {{view App.starRating maxRating=5}}
+            </div>
+        {{else}}
+            {{#unless canCreateSong}}
+                <div class="list-group-item">
+                    There are no {{name}} songs Why don't you <a href="#" {{action enableSongCreation}}>create one?</a>
+                </div>
+            {{/unless}}
+        {{/each}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="star-rating">
+        {{rating}}
+    </script>
+
+    <script src="lib.min.js"></script>
+    <script src="all.min.js"></script>
+</body>
+</html>
